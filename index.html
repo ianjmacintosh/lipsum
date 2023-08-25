@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lorem Ipsum Generator</title>
 </head>
+
 <body>
     <h1>Lorem Ipsum Generator</h1>
-    <textarea name="placeholder-text" id="placeholder-text" cols="100" rows="10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
+    <form action="">
+        <p>
+            <label for="number-of-paragraphs">Number of Paragraphs</label>
+            <input type="text" name="number-of-paragraphs" id="number-of-paragraphs" value="1">
+        </p>
+    </form>
+    <p>
+        <label for="output-text" id="output-text-label">Output Text (1 paragraph)</label><br />
+        <textarea name="output-text" id="output-text"
+            rows="10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
+    </p>
     <script>
-        document.getElementById("placeholder-text").select()
+        function getOutputTextLabel(paragraphs) {
+            return paragraphs === 1 ? `Output Text (${paragraphs} paragraph)` : `Output Text (${paragraphs} paragraphs)`
+        }
+        const textSample = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        const elOutputTextLabel = document.getElementById("output-text-label")
+        const elNumberOfParagraphs = document.getElementById("number-of-paragraphs");
+        const elOutputText = document.getElementById("output-text");
+
+        elNumberOfParagraphs.addEventListener("change", (event) => {
+            const numberOfParagraphs = parseInt(elNumberOfParagraphs.value, 10)
+            outputText = String(textSample + "\n\n").repeat(numberOfParagraphs).trim();
+            elOutputTextLabel.textContent = getOutputTextLabel(numberOfParagraphs)
+            elOutputText.value = outputText;
+        })
+        // document.getElementById("sample-text").select()
     </script>
 </body>
+
 </html>
