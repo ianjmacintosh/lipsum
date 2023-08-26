@@ -5,20 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lorem Ipsum Generator</title>
+    <link href="https://use.typekit.net/wgj0mmn.css" rel="stylesheet">
     <style>
         body {
+            background-color: #fefcfc;
+            color: #181d25;
             display: grid;
             min-height: 100vh;
             margin: 0 auto;
             max-width: 800px;
             grid-template-rows: min-content auto min-content;
+            font-family: adobe-caslon-pro, serif;
+        }
+
+        ::selection {
+            background: yellow;
         }
 
         h1 {
-            font-family: sans-serif;
+            font-family: futura-pt, sans-serif;
+            font-weight: 600;
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        label {
+            font-family: futura-pt, sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02rem;
+            color: #484d65;
+        }
+
+        textarea,
+        input {
+            font-family: adobe-caslon-pro, serif;
+            font-size: 1.2rem;
+            padding: 0.5rem;
         }
 
         textarea {
+            box-sizing: border-box;
             width: 100%;
         }
 
@@ -35,12 +63,12 @@
     <main>
         <form action="">
             <p>
-                <label for="number-of-paragraphs">Number of Paragraphs</label><br />
+                <label for="number-of-paragraphs">Paragraphs</label><br />
                 <input type="number" name="number-of-paragraphs" id="number-of-paragraphs" value="1">
             </p>
         </form>
         <p>
-            <label for="output-text" id="output-text-label">Output Text (1 paragraph)</label><br />
+            <label for="output-text" id="output-text-label">Output</label><br />
             <textarea spellcheck="false" name="output-text" id="output-text"
                 rows="10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
         </p>
@@ -49,9 +77,6 @@
         Made by Ian J. MacIntosh
     </footer>
     <script>
-        function getOutputTextLabel(paragraphs) {
-            return paragraphs === 1 ? `Output Text (${paragraphs} paragraph)` : `Output Text (${paragraphs} paragraphs)`
-        }
         const textSample = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         const elOutputTextLabel = document.getElementById("output-text-label")
         const elNumberOfParagraphs = document.getElementById("number-of-paragraphs");
@@ -60,7 +85,6 @@
         elNumberOfParagraphs.addEventListener("change", (event) => {
             const numberOfParagraphs = parseInt(elNumberOfParagraphs.value, 10)
             outputText = String(textSample + "\n\n").repeat(numberOfParagraphs).trim();
-            elOutputTextLabel.textContent = getOutputTextLabel(numberOfParagraphs)
             elOutputText.value = outputText;
         })
 
