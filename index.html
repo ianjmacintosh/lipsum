@@ -31,6 +31,15 @@
             margin: 1rem 0;
         }
 
+        div {
+            margin: 1.3rem 0;
+        }
+
+        figure {
+            margin: 0;
+        }
+
+        figcaption,
         label {
             font-family: futura-pt, sans-serif;
             font-weight: 600;
@@ -38,6 +47,12 @@
             text-transform: uppercase;
             letter-spacing: 0.02rem;
             color: #484d65;
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        figcaption {
+            text-align: right;
         }
 
         textarea,
@@ -45,6 +60,7 @@
             font-family: adobe-caslon-pro, serif;
             font-size: 1.2rem;
             padding: 0.5rem;
+            display: block;
         }
 
         textarea {
@@ -63,17 +79,21 @@
         <h1>Lorem Ipsum Generator</h1>
     </header>
     <main>
-        <form action="">
-            <p>
-                <label for="number-of-paragraphs">Paragraphs</label><br />
+        <form action="" id="output-text-form">
+            <div>
+
+                <label for="number-of-paragraphs">Paragraphs</label>
                 <input type="number" name="number-of-paragraphs" id="number-of-paragraphs" value="1">
-            </p>
+            </div>
         </form>
-        <p>
-            <label for="output-text" id="output-text-label">Output</label><br />
-            <textarea spellcheck="false" name="output-text" id="output-text"
-                rows="10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
-        </p>
+        <div>
+            <label for="output-text" id="output-text-label">Output</label>
+            <figure>
+                <textarea spellcheck="false" name="output-text" id="output-text"
+                    rows="10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
+                <figcaption id="output-text-caption">445 characters, 69 words</figcaption>
+            </figure>
+        </div>
     </main>
     <footer>
         Made by Ian J. MacIntosh
@@ -82,13 +102,27 @@
         const textSample = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         const elOutputTextLabel = document.getElementById("output-text-label")
         const elNumberOfParagraphs = document.getElementById("number-of-paragraphs");
+        const elOutputTextForm = document.getElementById("output-text-form");
         const elOutputText = document.getElementById("output-text");
+        const elOutputTextCaption = document.getElementById("output-text-caption");
 
         elNumberOfParagraphs.addEventListener("change", (event) => {
-            const numberOfParagraphs = parseInt(elNumberOfParagraphs.value, 10)
+            const numberOfParagraphs = parseInt(elNumberOfParagraphs.value, 10);
             outputText = String(textSample + "\n\n").repeat(numberOfParagraphs).trim();
             elOutputText.value = outputText;
-        })
+        });
+
+        elOutputText.addEventListener("keyup", handleContentChange)
+        elOutputText.addEventListener("change", handleContentChange)
+
+        function handleContentChange(event) {
+            const outputText = event.target.value;
+            elOutputTextCaption.textContent = getOutputTextStats(outputText);
+        }
+
+        function getOutputTextStats(text) {
+            return `${text.length} characters, ${text.split(' ').length} words`
+        }
 
         elOutputText.select()
     </script>
