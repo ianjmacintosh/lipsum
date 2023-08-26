@@ -121,7 +121,7 @@
         }
 
         function getOutputTextStats(text) {
-            return `${text.length} characters, ${text.split(' ').length} words`
+            return `${text.length} characters, ${text.split(' ').filter((word) => word !== "").length} words`
         }
 
         elOutputText.select()
