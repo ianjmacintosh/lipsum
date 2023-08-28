@@ -83,7 +83,8 @@
             <div>
 
                 <label for="number-of-paragraphs">Paragraphs</label>
-                <input type="number" name="number-of-paragraphs" id="number-of-paragraphs" value="1">
+                <input type="number" name="number-of-paragraphs" id="number-of-paragraphs" value="1" min="0" max="10000"
+                    required>
             </div>
         </form>
         <div>
@@ -106,16 +107,39 @@
         const elOutputText = document.getElementById("output-text");
         const elOutputTextCaption = document.getElementById("output-text-caption");
 
-        elNumberOfParagraphs.addEventListener("change", (event) => {
-            const numberOfParagraphs = parseInt(elNumberOfParagraphs.value, 10);
+        elNumberOfParagraphs.addEventListener("change", handleSettingsChange);
+        elOutputText.addEventListener("keyup", handleOutputChange)
+        elOutputText.addEventListener("change", handleOutputChange)
+
+        function handleSettingsChange(event) {
+            let numberOfParagraphs = elNumberOfParagraphs.value;
+            const minParagraphs = Number(elNumberOfParagraphs.getAttribute("min"));
+            const maxParagraphs = Number(elNumberOfParagraphs.getAttribute("max"));
+
+            // This is weird-looking, but I'm only checking if the value provided is a number. The user could've entered letters!
+            // JavaScript's type coercion is super useful here, acknowledges "012" is the same as 12
+            if (numberOfParagraphs != Number(numberOfParagraphs) || numberOfParagraphs === "") {
+                throw new RangeError(`You requested "${numberOfParagraphs}" paragraphs. Using plain digits (0-9), please specify a number of paragraphs between ${minParagraphs} and ${maxParagraphs}`)
+            }
+
+            if (numberOfParagraphs < minParagraphs || numberOfParagraphs > maxParagraphs) {
+                throw new RangeError(`You requested "${numberOfParagraphs}" paragraphs, please request an amount between ${minParagraphs} and ${maxParagraphs}`)
+            }
+
+            if (Number(numberOfParagraphs) !== parseInt(numberOfParagraphs, 10)) {
+                console.warn(`You requested "${numberOfParagraphs}" paragraphs, which isn't a whole number of paragraphs. This app is going to act like you requested ${parseInt(numberOfParagraphs, 10)} paragraphs`)
+            }
+
+            numberOfParagraphs = parseInt(numberOfParagraphs, 10);
+
             outputText = String(textSample + "\n\n").repeat(numberOfParagraphs).trim();
             elOutputText.value = outputText;
-        });
 
-        elOutputText.addEventListener("keyup", handleContentChange)
-        elOutputText.addEventListener("change", handleContentChange)
+            // TODO: Dispatch a change event to the output text element... in the meantime, do this insanity:
+            elOutputTextCaption.textContent = getOutputTextStats(outputText);
+        }
 
-        function handleContentChange(event) {
+        function handleOutputChange(event) {
             const outputText = event.target.value;
             elOutputTextCaption.textContent = getOutputTextStats(outputText);
         }
